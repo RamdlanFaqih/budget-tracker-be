@@ -9,12 +9,22 @@ const findUsers = async () => {
 const findUserByEmail = async (userEmail) => {
   const user = await prisma.user.findUnique({
     where: {
-      email: userEmail
+      email: userEmail,
+    },
+  });
+
+  return user;
+};
+
+const findUserById = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
     }
   })
 
-  return user
-};
+  return user;
+}
 
 const insertUser = async (userData) => {
   const user = await prisma.user.create({
@@ -28,8 +38,23 @@ const insertUser = async (userData) => {
   return user;
 };
 
+const updateUserBalance = async (userId, userBalance) => {
+  const newBalance = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      balance: userBalance,
+    },
+  });
+
+  return newBalance;
+};
+
 module.exports = {
   findUsers,
   insertUser,
-  findUserByEmail
+  findUserByEmail,
+  findUserById,
+  updateUserBalance,
 };

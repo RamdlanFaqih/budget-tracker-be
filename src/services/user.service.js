@@ -3,6 +3,8 @@ const {
   findUsers,
   insertUser,
   findUserByEmail,
+  updateUserBalance,
+  findUserById,
 } = require("../models/user.model");
 const bcrypt = require("bcrypt");
 
@@ -36,6 +38,20 @@ const createUser = async (newUserData) => {
   }
 };
 
+const updateBalanceUser = async (id, newUserBalance) => {
+  try {
+    const user = await findUserById(id);
+    if (!user) {
+      throw Error("user not found");
+    }
+    const updateUser = await updateUserBalance(id, newUserBalance);
+
+    return updateUser;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 const loginUser = async (email, password) => {
   try {
     if (!email | !password) {
@@ -61,7 +77,7 @@ const loginUser = async (email, password) => {
       throw Error("Email or Password Invalid");
     }
   } catch (err) {
-    throw Error(err.message);
+    throw new Error(err.message);
   }
 };
 
@@ -70,4 +86,5 @@ module.exports = {
   getUser,
   createUser,
   loginUser,
+  updateBalanceUser,
 };

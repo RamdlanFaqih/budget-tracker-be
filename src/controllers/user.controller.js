@@ -1,6 +1,12 @@
 const express = require("express");
 
-const { getAllUser, createUser, getUser, loginUser } = require("../services/user.service");
+const {
+  getAllUser,
+  createUser,
+  getUser,
+  loginUser,
+  updateBalanceUser,
+} = require("../services/user.service");
 const verifyToken = require("../middleware/auth");
 
 const router = express.Router();
@@ -20,11 +26,28 @@ router.get("/user", async (req, res) => {
     const email = req.body.email;
 
     const user = await getUser(email);
-    res.send(user)
+    res.send(user);
   } catch (err) {
-    res.status(400).send(err.message)
+    res.status(400).send(err.message);
   }
-} )
+});
+
+router.patch("/updateBalance", async(req, res) => {
+  try {
+    const {id, balance} = req.body;
+
+    const updateBalance = await updateBalanceUser(id, balance);
+
+    res.send({
+      data: updateBalance,
+      message: "Balance updated successfully",
+    })
+  } catch (err) {
+    res.status(400).json({
+      message: err.message
+    })
+  }
+})
 
 router.post("/", async (req, res) => {
   try {
@@ -42,19 +65,19 @@ router.post("/", async (req, res) => {
 
 router.post("/user", async (req, res) => {
   try {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     const login = await loginUser(email, password);
 
     res.send({
-      message: 'Login Successfully',
-      token: login
-    })
+      message: "Login Successfully",
+      token: login,
+    });
   } catch (err) {
     res.status(400).json({
-      message: err.message
-    })
+      message: err.message,
+    });
   }
-})
+});
 
 module.exports = router;
