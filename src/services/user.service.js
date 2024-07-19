@@ -48,16 +48,17 @@ const loginUser = async (email, password) => {
       const userPassword = user.password;
       const compared = await bcrypt.compare(password, userPassword);
       console.log(compared);
-
       if (compared) {
         const token = await generateToken({
           id: userId,
           email: userEmail,
         });
-        return token
+        return token;
       } else {
         throw Error("Login Failed");
       }
+    } else {
+      throw Error("Email or Password Invalid");
     }
   } catch (err) {
     throw Error(err.message);
@@ -68,5 +69,5 @@ module.exports = {
   getAllUser,
   getUser,
   createUser,
-  loginUser
+  loginUser,
 };
