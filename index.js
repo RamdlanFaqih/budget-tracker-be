@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 
 const userController = require("./src/controllers/user.controller")
-
+const transactionController = require("./src/controllers/transaction.controller")
 const port = process.env.PORT;
 
 app.use(cors());
@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userController)
+app.use("/transactions", transactionController)
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
