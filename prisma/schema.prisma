@@ -25,7 +25,5 @@ model Transaction {
   amount      Float
   description String?
   category    String
-  type        String
   date        DateTime @default(now())
-  month       Int
 }
